@@ -81,21 +81,12 @@ fun SpotifyWidgetScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                // Header Section
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    // Preview do Widget Spotify
-                    SpotifyWidgetPreview(
-                        widgetSize = selectedWidgetType,
-                        widgetStyle = selectedStyle,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
+                // Preview do Widget Spotify
+                SpotifyWidgetPreview(
+                    widgetSize = selectedWidgetType,
+                    widgetStyle = selectedStyle,
+                    modifier = Modifier.padding(16.dp)
+                )
             }
 
             item {
