@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Widget Provider</string>
+    <string name="app_description">Crie widgets inteligentes para seus apps favoritos</string>
+    <string name="feature_music_control">Controle de Música</string>
+    <string name="feature_music_description">Controle reprodução do Spotify diretamente do widget</string>
+    <string name="feature_custom_widgets">Widgets Personalizados</string>
+    <string name="feature_custom_description">Crie widgets únicos para seus apps favoritos</string>
+    <string name="feature_intuitive_ui">Interface Intuitiva</string>
+    <string name="feature_intuitive_description">Design moderno seguindo Material Design</string>
+    <string name="feature_real_time">Atualizações em Tempo Real</string>
+    <string name="feature_real_time_description">Widgets sempre sincronizados com seus apps</string>
+    <string name="button_get_started">Começar Agora</string>
+    <string name="section_features">Recursos Disponíveis</string>
+</resources>

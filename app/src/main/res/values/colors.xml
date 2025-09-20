@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Provider Theme Colors -->
+    <color name="widget_blue_light">#FF7BB3FF</color>
+    <color name="widget_blue_dark">#FF1976D2</color>
+    <color name="widget_blue_grey_light">#FFB0BEC5</color>
+    <color name="widget_blue_grey_dark">#FF455A64</color>
+    <color name="widget_accent_light">#FF81C784</color>
+    <color name="widget_accent_dark">#FF4CAF50</color>
+    
+    <!-- Surface Colors -->
+    <color name="widget_surface_light">#FFF5F5F5</color>
+    <color name="widget_surface_dark">#FF212121</color>
+    
+    <!-- Background Colors -->
+    <color name="widget_background_light">#FFFFFFFF</color>
+    <color name="widget_background_dark">#FF121212</color>
+    
+    <!-- Standard Colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
