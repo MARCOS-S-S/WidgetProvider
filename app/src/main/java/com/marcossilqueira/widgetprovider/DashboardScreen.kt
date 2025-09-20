@@ -21,6 +21,7 @@ import com.marcossilqueira.widgetprovider.ui.theme.WidgetProviderTheme
 @Composable
 fun DashboardScreen(
     onBackClick: () -> Unit = {},
+    onSpotifyWidgetClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -99,7 +100,15 @@ fun DashboardScreen(
                     contentPadding = PaddingValues(horizontal = 4.dp)
                 ) {
                     items(getAvailableWidgets()) { widget ->
-                        WidgetCard(widget = widget)
+                        WidgetCard(
+                            widget = widget,
+                            onCreateClick = {
+                                when (widget.name) {
+                                    "Spotify" -> onSpotifyWidgetClick()
+                                    else -> { /* TODO: Implementar outros widgets */ }
+                                }
+                            }
+                        )
                     }
                 }
             }
@@ -160,7 +169,10 @@ fun DashboardScreen(
 }
 
 @Composable
-fun WidgetCard(widget: WidgetType) {
+fun WidgetCard(
+    widget: WidgetType,
+    onCreateClick: () -> Unit = {}
+) {
     Card(
         modifier = Modifier.width(160.dp),
         colors = CardDefaults.cardColors(
@@ -195,7 +207,7 @@ fun WidgetCard(widget: WidgetType) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
-                onClick = { /* TODO: Implementar criação do widget */ },
+                onClick = onCreateClick,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary

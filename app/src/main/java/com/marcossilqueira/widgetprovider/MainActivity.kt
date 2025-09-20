@@ -51,7 +51,11 @@ fun AppNavigation() {
             onGetStartedClick = { currentScreen = "dashboard" }
         )
         "dashboard" -> DashboardScreen(
-            onBackClick = { currentScreen = "home" }
+            onBackClick = { currentScreen = "home" },
+            onSpotifyWidgetClick = { currentScreen = "spotify_widget" }
+        )
+        "spotify_widget" -> SpotifyWidgetScreen(
+            onBackClick = { currentScreen = "dashboard" }
         )
     }
 }
