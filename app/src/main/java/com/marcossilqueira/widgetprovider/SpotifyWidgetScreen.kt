@@ -23,6 +23,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.platform.LocalContext
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.widget.Toast
 import com.marcossilqueira.widgetprovider.ui.theme.WidgetProviderTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,6 +40,7 @@ fun SpotifyWidgetScreen(
     var selectedStyle by remember { mutableStateOf(WidgetStyle.MODERN) }
     var showAdvancedSettings by remember { mutableStateOf(false) }
     var widgetTransparency by remember { mutableStateOf(1f) }
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -307,19 +312,26 @@ fun SpotifyWidgetScreen(
                     }
                     
                     Button(
-                        onClick = { /* TODO: Implementar criação do widget */ },
+                        onClick = { 
+                            saveWidgetDesign(
+                                context = context,
+                                widgetSize = selectedWidgetType,
+                                widgetStyle = selectedStyle,
+                                transparency = widgetTransparency
+                            )
+                        },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.Add,
+                            imageVector = Icons.Filled.Save,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Criar Widget")
+                        Text("Salvar Design")
                     }
                 }
             }
@@ -844,6 +856,73 @@ fun getAdvancedSettings(): List<AdvancedSetting> {
             icon = Icons.Filled.Notifications
         )
     )
+}
+
+fun saveWidgetDesign(
+    context: android.content.Context,
+    widgetSize: WidgetSize,
+    widgetStyle: WidgetStyle,
+    transparency: Float
+) {
+    try {
+        // Salvar configurações globais do widget
+        val prefs = context.getSharedPreferences("spotify_widget_global", android.content.Context.MODE_PRIVATE)
+        prefs.edit()
+            .putString("widget_size", widgetSize.name)
+            .putString("widget_style", widgetStyle.name)
+            .putFloat("widget_transparency", transparency)
+            .apply()
+        
+        // Forçar atualização de todos os widgets existentes
+        updateAllExistingWidgets(context)
+        
+        // Forçar atualização dos previews no seletor
+        SpotifyWidgetProvider.forceWidgetPreviewUpdate(context)
+        
+        // Mostrar mensagem de sucesso com instruções
+        Toast.makeText(
+            context,
+            "Design salvo! Para ver os previews atualizados, feche e reabra o seletor de widgets.",
+            Toast.LENGTH_LONG
+        ).show()
+        
+    } catch (e: Exception) {
+        Toast.makeText(
+            context,
+            "Erro ao salvar design: ${e.message}",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+}
+
+private fun updateAllExistingWidgets(context: android.content.Context) {
+    try {
+        val appWidgetManager = android.appwidget.AppWidgetManager.getInstance(context)
+        
+        // Atualizar widgets pequenos
+        val smallProvider = android.content.ComponentName(context, SpotifyWidgetSmallProvider::class.java)
+        val smallWidgetIds = appWidgetManager.getAppWidgetIds(smallProvider)
+        for (widgetId in smallWidgetIds) {
+            SpotifyWidgetProvider.updateAppWidget(context, appWidgetManager, widgetId)
+        }
+        
+        // Atualizar widgets médios
+        val mediumProvider = android.content.ComponentName(context, SpotifyWidgetMediumProvider::class.java)
+        val mediumWidgetIds = appWidgetManager.getAppWidgetIds(mediumProvider)
+        for (widgetId in mediumWidgetIds) {
+            SpotifyWidgetProvider.updateAppWidget(context, appWidgetManager, widgetId)
+        }
+        
+        // Atualizar widgets grandes
+        val largeProvider = android.content.ComponentName(context, SpotifyWidgetLargeProvider::class.java)
+        val largeWidgetIds = appWidgetManager.getAppWidgetIds(largeProvider)
+        for (widgetId in largeWidgetIds) {
+            SpotifyWidgetProvider.updateAppWidget(context, appWidgetManager, widgetId)
+        }
+        
+    } catch (e: Exception) {
+        // Falha silenciosa - não é crítico
+    }
 }
 
 @Preview(showBackground = true)

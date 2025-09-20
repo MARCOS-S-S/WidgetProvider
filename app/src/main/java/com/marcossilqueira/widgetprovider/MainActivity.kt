@@ -1,8 +1,11 @@
 package com.marcossilqueira.widgetprovider
 
+import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
@@ -34,15 +37,52 @@ import com.marcossilqueira.widgetprovider.ui.theme.WidgetProviderTheme
 
 class MainActivity : ComponentActivity() {
     private var spotifyAuthService: SpotifyAuthService? = null
+    private var widgetManager: WidgetManager? = null
+    
+    // Launcher para capturar resultado da seleção de widgets
+    private val widgetPickerLauncher: ActivityResultLauncher<Intent> = 
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            handleWidgetSelection(result.data)
+        }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        // Inicializar WidgetManager
+        widgetManager = WidgetManager(this)
+        widgetManager?.setWidgetPickerLauncher(widgetPickerLauncher)
+        widgetManager?.startListening()
+        
         setContent {
             WidgetProviderTheme {
                 AppNavigation()
             }
         }
+    }
+    
+    private fun handleWidgetSelection(data: Intent?) {
+        if (data != null) {
+            val appWidgetId = data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+            
+            if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                // Widget foi selecionado com sucesso
+                val appWidgetManager = AppWidgetManager.getInstance(this)
+                SpotifyWidgetProvider.updateAppWidget(this, appWidgetManager, appWidgetId)
+                
+                android.widget.Toast.makeText(
+                    this,
+                    "Widget Spotify adicionado com sucesso!",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+    
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        widgetManager?.stopListening()
     }
     
     override fun onNewIntent(intent: Intent?) {

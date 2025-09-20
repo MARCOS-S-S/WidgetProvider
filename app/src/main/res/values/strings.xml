@@ -11,4 +11,8 @@
     <string name="feature_real_time_description">Widgets sempre sincronizados com seus apps</string>
     <string name="button_get_started">Começar Agora</string>
     <string name="section_features">Recursos Disponíveis</string>
+    <string name="spotify_widget_description">Widget Spotify - Controle sua música favorita</string>
+    <string name="spotify_widget_small_description">Widget Spotify Pequeno</string>
+    <string name="spotify_widget_medium_description">Widget Spotify Médio</string>
+    <string name="spotify_widget_large_description">Widget Spotify Grande</string>
 </resources>

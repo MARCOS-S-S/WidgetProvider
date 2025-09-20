@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Permissões para internet (necessário para autenticação Spotify) -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.BIND_APPWIDGET" />
+        <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -35,6 +37,34 @@
                 <data android:scheme="${redirectSchemeName}" android:host="${redirectHostName}" />
             </intent-filter>
         </activity>
+
+        <!-- Widget Providers -->
+        <receiver android:name=".SpotifyWidgetSmallProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/spotify_widget_small_info" />
+        </receiver>
+
+        <receiver android:name=".SpotifyWidgetMediumProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/spotify_widget_medium_info" />
+        </receiver>
+
+        <receiver android:name=".SpotifyWidgetLargeProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/spotify_widget_large_info" />
+        </receiver>
     </application>
 
 </manifest>
