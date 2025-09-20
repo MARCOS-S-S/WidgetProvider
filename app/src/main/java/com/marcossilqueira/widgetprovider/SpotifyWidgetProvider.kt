@@ -263,18 +263,40 @@ class SpotifyWidgetProvider : AppWidgetProvider() {
         
         when (intent.action) {
             "PLAY_PAUSE" -> {
-                // TODO: Implementar controle de play/pause do Spotify
                 val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
                 if (appWidgetId != -1) {
+                    // TODO: Implementar controle de play/pause do Spotify
+                    android.widget.Toast.makeText(
+                        context,
+                        "Play/Pause - Widget $appWidgetId",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    
                     val appWidgetManager = AppWidgetManager.getInstance(context)
                     updateAppWidget(context, appWidgetManager, appWidgetId)
                 }
             }
             "NEXT" -> {
-                // TODO: Implementar próxima música
+                val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+                if (appWidgetId != -1) {
+                    // TODO: Implementar próxima música
+                    android.widget.Toast.makeText(
+                        context,
+                        "Próxima música - Widget $appWidgetId",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
             "PREVIOUS" -> {
-                // TODO: Implementar música anterior
+                val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+                if (appWidgetId != -1) {
+                    // TODO: Implementar música anterior
+                    android.widget.Toast.makeText(
+                        context,
+                        "Música anterior - Widget $appWidgetId",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

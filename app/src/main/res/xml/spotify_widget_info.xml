@@ -11,3 +11,4 @@
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:description="@string/spotify_widget_description" />
+

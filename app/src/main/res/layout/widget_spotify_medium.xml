@@ -56,15 +56,47 @@
 
         </LinearLayout>
 
-        <!-- Botão Play/Pause -->
-        <ImageButton
-            android:id="@+id/btn_play_pause"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_play_arrow"
-            android:contentDescription="Play/Pause"
-            android:tint="@android:color/white" />
+        <!-- Controles de música -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Botão Anterior -->
+            <ImageButton
+                android:id="@+id/btn_previous"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_skip_previous"
+                android:contentDescription="Música Anterior"
+                android:tint="@android:color/white" />
+
+            <!-- Botão Play/Pause -->
+            <ImageButton
+                android:id="@+id/btn_play_pause"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_play_arrow"
+                android:contentDescription="Play/Pause"
+                android:tint="@android:color/white" />
+
+            <!-- Botão Próxima -->
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="8dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_skip_next"
+                android:contentDescription="Próxima Música"
+                android:tint="@android:color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
