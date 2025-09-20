@@ -1,5 +1,6 @@
 package com.marcossilqueira.widgetprovider
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,9 +29,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
 import com.marcossilqueira.widgetprovider.ui.theme.WidgetProviderTheme
 
 class MainActivity : ComponentActivity() {
+    private var spotifyAuthService: SpotifyAuthService? = null
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,6 +43,16 @@ class MainActivity : ComponentActivity() {
                 AppNavigation()
             }
         }
+    }
+    
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        // Processar callback do Spotify
+        spotifyAuthService?.handleAuthCallback(intent)
+    }
+    
+    fun setSpotifyAuthService(authService: SpotifyAuthService) {
+        this.spotifyAuthService = authService
     }
 }
 
@@ -55,7 +69,13 @@ fun AppNavigation() {
             onSpotifyWidgetClick = { currentScreen = "spotify_widget" }
         )
         "spotify_widget" -> SpotifyWidgetScreen(
-            onBackClick = { currentScreen = "dashboard" }
+            onBackClick = { currentScreen = "dashboard" },
+            onSpotifyAuthClick = { currentScreen = "spotify_auth" }
+        )
+        "spotify_auth" -> SpotifyAuthScreen(
+            authService = SpotifyAuthService(LocalContext.current),
+            onBackClick = { currentScreen = "spotify_widget" },
+            onAuthSuccess = { currentScreen = "spotify_widget" }
         )
     }
 }

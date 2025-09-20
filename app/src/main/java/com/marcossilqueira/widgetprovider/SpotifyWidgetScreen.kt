@@ -23,6 +23,7 @@ import com.marcossilqueira.widgetprovider.ui.theme.WidgetProviderTheme
 @Composable
 fun SpotifyWidgetScreen(
     onBackClick: () -> Unit = {},
+    onSpotifyAuthClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var selectedWidgetType by remember { mutableStateOf(WidgetSize.SMALL) }
@@ -217,7 +218,15 @@ fun SpotifyWidgetScreen(
 
             if (showAdvancedSettings) {
                 items(getAdvancedSettings()) { setting ->
-                    AdvancedSettingCard(setting = setting)
+                    AdvancedSettingCard(
+                        setting = setting,
+                        onClick = {
+                            when (setting.title) {
+                                "Conectar ao Spotify" -> onSpotifyAuthClick()
+                                else -> { /* TODO: Implementar outras configurações */ }
+                            }
+                        }
+                    )
                 }
             }
 
@@ -348,13 +357,17 @@ fun FeatureToggleCard(feature: SpotifyFeature) {
 }
 
 @Composable
-fun AdvancedSettingCard(setting: AdvancedSetting) {
+fun AdvancedSettingCard(
+    setting: AdvancedSetting,
+    onClick: () -> Unit = {}
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -459,7 +472,7 @@ fun getSpotifyFeatures(): List<SpotifyFeature> {
 fun getAdvancedSettings(): List<AdvancedSetting> {
     return listOf(
         AdvancedSetting(
-            title = "Permissões do Spotify",
+            title = "Conectar ao Spotify",
             description = "Configurar acesso à conta Spotify",
             icon = Icons.Filled.Security
         ),

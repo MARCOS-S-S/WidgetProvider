@@ -16,6 +16,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Spotify redirect configuration
+        manifestPlaceholders["redirectSchemeName"] = "widgetprovider"
+        manifestPlaceholders["redirectHostName"] = "callback"
     }
 
     buildTypes {
@@ -51,6 +55,22 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.foundation)
+    
+    // Spotify SDK 2025 - Download manual necessário
+    // implementation("com.spotify.android:app-remote:0.7.2") // Não disponível no Maven
+    // implementation("com.spotify.android:auth:2.1.0") // Não disponível no Maven
+    
+    // Alternativa: Usar Web API diretamente (mais confiável)
+    implementation("com.google.code.gson:gson:2.10.1")
+    
+    // Networking
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
