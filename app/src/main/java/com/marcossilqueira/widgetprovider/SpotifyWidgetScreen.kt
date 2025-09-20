@@ -35,6 +35,7 @@ fun SpotifyWidgetScreen(
     var selectedWidgetType by remember { mutableStateOf(WidgetSize.SMALL) }
     var selectedStyle by remember { mutableStateOf(WidgetStyle.MODERN) }
     var showAdvancedSettings by remember { mutableStateOf(false) }
+    var widgetTransparency by remember { mutableStateOf(1f) }
 
     Scaffold(
         topBar = {
@@ -85,6 +86,7 @@ fun SpotifyWidgetScreen(
                 SpotifyWidgetPreview(
                     widgetSize = selectedWidgetType,
                     widgetStyle = selectedStyle,
+                    transparency = widgetTransparency,
                     modifier = Modifier.padding(16.dp)
                 )
             }
@@ -163,6 +165,78 @@ fun SpotifyWidgetScreen(
                             isSelected = selectedStyle == style,
                             onClick = { selectedStyle = style }
                         )
+                    }
+                }
+            }
+
+            item {
+                Text(
+                    text = "Transparência",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Opacidade do Widget",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                text = "${(widgetTransparency * 100).toInt()}%",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Slider(
+                            value = widgetTransparency,
+                            onValueChange = { widgetTransparency = it },
+                            valueRange = 0.1f..1f,
+                            steps = 8,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = SliderDefaults.colors(
+                                thumbColor = MaterialTheme.colorScheme.primary,
+                                activeTrackColor = MaterialTheme.colorScheme.primary,
+                                inactiveTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                            )
+                        )
+                        
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Transparente",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                            )
+                            Text(
+                                text = "Opaco",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                            )
+                        }
                     }
                 }
             }
@@ -460,6 +534,7 @@ fun getSpotifyFeatures(): List<SpotifyFeature> {
 fun SpotifyWidgetPreview(
     widgetSize: WidgetSize,
     widgetStyle: WidgetStyle,
+    transparency: Float = 1f,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -477,21 +552,24 @@ fun SpotifyWidgetPreview(
         
         // Preview baseado no tamanho selecionado
         when (widgetSize) {
-            WidgetSize.SMALL -> SmallWidgetPreview(widgetStyle)
-            WidgetSize.MEDIUM -> MediumWidgetPreview(widgetStyle)
-            WidgetSize.LARGE -> LargeWidgetPreview(widgetStyle)
+            WidgetSize.SMALL -> SmallWidgetPreview(widgetStyle, transparency)
+            WidgetSize.MEDIUM -> MediumWidgetPreview(widgetStyle, transparency)
+            WidgetSize.LARGE -> LargeWidgetPreview(widgetStyle, transparency)
         }
     }
 }
 
 @Composable
-fun SmallWidgetPreview(style: WidgetStyle) {
+fun SmallWidgetPreview(style: WidgetStyle, transparency: Float = 1f) {
     Card(
         modifier = Modifier
             .size(120.dp, 60.dp)
             .clip(RoundedCornerShape(12.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = if (style == WidgetStyle.MODERN) Color(0xFF1DB954) else Color(0xFF191414)
+            containerColor = if (style == WidgetStyle.MODERN) 
+                Color(0xFF1DB954).copy(alpha = transparency) 
+            else 
+                Color(0xFF191414).copy(alpha = transparency)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -548,13 +626,16 @@ fun SmallWidgetPreview(style: WidgetStyle) {
 }
 
 @Composable
-fun MediumWidgetPreview(style: WidgetStyle) {
+fun MediumWidgetPreview(style: WidgetStyle, transparency: Float = 1f) {
     Card(
         modifier = Modifier
             .size(200.dp, 100.dp)
             .clip(RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = if (style == WidgetStyle.MODERN) Color(0xFF1DB954) else Color(0xFF191414)
+            containerColor = if (style == WidgetStyle.MODERN) 
+                Color(0xFF1DB954).copy(alpha = transparency) 
+            else 
+                Color(0xFF191414).copy(alpha = transparency)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
@@ -631,13 +712,16 @@ fun MediumWidgetPreview(style: WidgetStyle) {
 }
 
 @Composable
-fun LargeWidgetPreview(style: WidgetStyle) {
+fun LargeWidgetPreview(style: WidgetStyle, transparency: Float = 1f) {
     Card(
         modifier = Modifier
             .size(280.dp, 140.dp)
             .clip(RoundedCornerShape(20.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = if (style == WidgetStyle.MODERN) Color(0xFF1DB954) else Color(0xFF191414)
+            containerColor = if (style == WidgetStyle.MODERN) 
+                Color(0xFF1DB954).copy(alpha = transparency) 
+            else 
+                Color(0xFF191414).copy(alpha = transparency)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
